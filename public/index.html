@@ -8,11 +8,15 @@
   <script src="/javascripts/jquery.js"></script>
   <script src="/javascripts/handlebars.js"></script>
        <script id="contactList" type="text/x-handlebars">
+          
           {{#each contacts}}
             <article class="contact" id="{{id}}">
               <h2>{{full_name}}</h2>
               <p>Email Address: {{email}}</p>
               <p>Phone Number: {{phone_number}}</p>
+              {{#if tags}}
+                <p>Tags: {{separateTags tags}}</p>
+              {{/if}}
               <input type="button" id='editContact' value="Edit">
               <input type="button" id='deleteContact' value="Delete">
             </article>
@@ -53,6 +57,28 @@
         <dd>
           <input type="tel" name="phone_number" id="phone_number" pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" required oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Please enter a 10 digit number')">
         </dd>
+        <fieldset id="tags">
+            <legend>Add one or more tag(s) to contact:</legend>
+            <div>
+              <input type="checkbox" id="buisness" name="buisness">
+              <label for="buisness">buisness</label>
+            </div>
+        
+            <div>
+              <input type="checkbox" id="engineering" name="engineering">
+              <label for="engineering">engineering</label>
+            </div>
+
+            <div>
+              <input type="checkbox" id="sales" name="sales">
+              <label for="sales">sales</label>
+            </div>
+
+            <div>
+              <input type="checkbox" id="marketing" name="marketing">
+              <label for="marketing">marketing</label>
+            </div>
+        </fieldset>
         <input type="submit" id='submitAdd' value="Submit">
         <input type="button" id='cancelAdd' value="Cancel">
       </dl>

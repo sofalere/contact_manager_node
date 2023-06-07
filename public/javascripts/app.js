@@ -3,6 +3,10 @@ const View = {
   init() {
     this.form = document.querySelector('form');
     this.main = document.querySelector('.main');
+    Handlebars.registerHelper('separateTags', (tags) => {
+      return tags.split(',').join(', ');
+    });
+    
     return this;
   },
 
@@ -62,6 +66,7 @@ const Controller = {
     let self = this;
     self.view.bind('openForm', 'click', self.openAddContactFormHandler.bind(self));
     self.view.bind('addContact', 'submit', self.submitAddContactHandler.bind(self));
+
   },
 
   openAddContactFormHandler() {
@@ -79,7 +84,7 @@ const Controller = {
     this.view.updateContacts(contact)
     this.view.showMain();
   },
-
+  
   errorMessage(message, error) {
     console.log(message, error);
   },
@@ -91,8 +96,21 @@ const Model = {
     return this;
   },
 
+  serialize(data) {
+    let json = {};
+    for (let pair of data.entries()) {
+      if (pair[1] === 'on') {
+        json['tags'] = (json['tags']) ? json['tags'] + ',' + pair[0] : pair[0];
+      } else {
+        json[pair[0]] = pair[1];
+      }
+    }
+    return json;
+  },
+
   addContact: async function(data, resolve, reject) {
-    const json = Object.fromEntries(data.entries());
+    const json = this.serialize(data);
+
     try {
       const response = await fetch("http://localhost:3000/api/contacts/", {
         method: "POST",
