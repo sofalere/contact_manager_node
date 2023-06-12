@@ -1,184 +1,107 @@
 [
   {
-    "id": 1,
-    "full_name": "Naveed Fida",
-    "email": "nf@example.com",
-    "phone_number": "12345678901",
-    "tags": "work,friend"
-  },
-  {
-    "id": 2,
-    "full_name": "Victor Reyes",
-    "email": "vpr@example.com",
-    "phone_number": "09876543210",
-    "tags": "work,friend"
-  },
-  {
-    "id": 3,
-    "full_name": "Pete Hanson",
-    "email": "ph@example.com",
-    "phone_number": "54321098761",
-    "tags": null
-  },
-  {
-    "full_name": "dewef",
+    "full_name": "tttt",
     "phone_number": "1231231234",
-    "email": "ewfwfe@2wrg.er",
-    "tags": null,
-    "id": 4
-  },
-  {
-    "full_name": "fwg",
-    "phone_number": "1231231234",
-    "email": "gwge@rerg.net",
-    "tags": null,
-    "id": 5
-  },
-  {
-    "full_name": "fwg",
-    "phone_number": "1231231234",
-    "email": "gwge@rerg.net",
-    "tags": null,
-    "id": 6
-  },
-  {
-    "full_name": "sdfasdf",
-    "phone_number": "1231231231",
-    "email": "sofrw@sdf.net",
-    "tags": null,
-    "id": 7
-  },
-  {
-    "full_name": "sdfasdf",
-    "phone_number": "1231231212",
-    "email": "asdf@sdfs.net",
-    "tags": null,
-    "id": 8
-  },
-  {
-    "full_name": "rgrsg",
-    "phone_number": "1231231234",
-    "email": "sgge@rg.net",
-    "tags": null,
-    "id": 9
-  },
-  {
-    "full_name": "dsfsd",
-    "phone_number": "1231231231",
     "email": "asdasd@wr.net",
-    "tags": null,
-    "id": 10
+    "tags": "buisness",
+    "id": 39
   },
   {
-    "full_name": "wqe",
+    "full_name": "BBB",
+    "phone_number": "1231231234",
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 40
+  },
+  {
+    "full_name": "NNN",
+    "phone_number": "1231231212",
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 41
+  },
+  {
+    "full_name": "AAA",
+    "phone_number": "1231231234",
+    "email": "asdasd@wr.net",
+    "tags": "buisness,marketing",
+    "id": 42
+  },
+  {
+    "full_name": "AAA",
+    "phone_number": "1231231234",
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 43
+  },
+  {
+    "full_name": "asdaasd",
+    "phone_number": "1231231234",
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 44
+  },
+  {
+    "full_name": "aaaa",
+    "phone_number": "1231231234",
+    "email": "asdasd@wr.net",
+    "tags": "buisness,marketing",
+    "id": 45
+  },
+  {
+    "full_name": "qweq",
     "phone_number": "1231231234",
     "email": "qwe@erwe.net",
-    "tags": null,
-    "id": 11
+    "tags": "buisness",
+    "id": 46
   },
   {
-    "full_name": "ewrwer",
-    "phone_number": "1231231231",
-    "email": "werw@wegw.net",
-    "tags": null,
-    "id": 12
-  },
-  {
-    "full_name": "ewrewr",
-    "phone_number": "1231231212",
-    "email": "werw@wegw.net",
-    "tags": null,
-    "id": 13
-  },
-  {
-    "full_name": "rtret",
+    "full_name": "bbb",
     "phone_number": "1231231234",
-    "email": "ertr@rwge.net",
-    "tags": null,
-    "id": 14
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 47
   },
   {
-    "full_name": "weewr",
+    "full_name": "asda",
     "phone_number": "1231231234",
-    "email": "werew@wrge.net",
-    "tags": null,
-    "id": 15
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 48
   },
   {
-    "full_name": "rege",
+    "full_name": "AAAA",
     "phone_number": "1231231234",
-    "email": "gre@wrge.net",
-    "tags": null,
-    "id": 16
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 49
   },
   {
-    "full_name": "ewrw",
+    "full_name": "asfs",
     "phone_number": "1231231234",
-    "email": "wrw@wegew.net",
-    "tags": null,
-    "id": 17
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 50
   },
   {
-    "full_name": "efw",
+    "full_name": "asda",
     "phone_number": "1231231234",
-    "email": "wef@ege.net",
-    "tags": null,
-    "id": 18
+    "email": "asdasd@wr.net",
+    "tags": "buisness",
+    "id": 51
   },
   {
-    "full_name": "efwe",
+    "full_name": "asfs",
     "phone_number": "1231231234",
-    "email": "wef@rge.net",
-    "tags": null,
-    "id": 19
+    "email": "asdasd@wr.net",
+    "tags": "buisness,sales",
+    "id": 52
   },
   {
-    "full_name": "ewfw",
-    "phone_number": "1231231212",
-    "email": "efw@ewr.et",
-    "tags": null,
-    "id": 20
-  },
-  {
-    "full_name": "dsgsd",
+    "full_name": "ASAS",
     "phone_number": "1231231234",
-    "email": "sdf@efwe.net",
-    "tags": null,
-    "id": 21
-  },
-  {
-    "full_name": "rdxrd",
-    "phone_number": "2123123145",
-    "email": "yrdrd@jtfty.net",
-    "tags": null,
-    "id": 22
-  },
-  {
-    "full_name": "132",
-    "phone_number": "1231231234",
-    "email": "2342@f.newt",
-    "tags": null,
-    "id": 23
-  },
-  {
-    "full_name": "THISFEa",
-    "phone_number": "1231231234",
-    "email": "sf@rge.ne",
-    "tags": null,
-    "id": 24
-  },
-  {
-    "full_name": "asfda",
-    "phone_number": "2342342342",
-    "email": "dsfs@sge.net",
-    "tags": null,
-    "id": 25
-  },
-  {
-    "full_name": "fwef",
-    "phone_number": "1231231234",
-    "email": "wff@fwe.net",
-    "tags": "engineering,sales",
-    "id": 26
+    "email": "asdasd@wr.net",
+    "tags": "buisness,marketing",
+    "id": 57
   }
 ]

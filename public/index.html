@@ -17,12 +17,9 @@
               {{#if tags}}
                 <p>Tags: {{separateTags tags}}</p>
               {{/if}}
-              <input type="button" id='editContact' value="Edit">
-              <input type="button" id='deleteContact' value="Delete">
+              <button type="button" id='editContact'>Edit</button>
+              <button type="button" id='deleteContact'>Delete</button>
             </article>
-          {{else}}
-            <p>There are no contacts</p>
-            <button class="addContact">Add Contact</button>
           {{/each}}
       </script>
   <script src="/javascripts/app.js"></script>
@@ -34,33 +31,37 @@
     <button class="addContact">Add Contact</button>
     <input id="search" type="text" placeholder="Search">
     <div class="list">
+      <div id="noContacts" class="hidden">
+        <p>There are no contacts</p>
+        <button class="addContact">Add Contact</button>
+      </div>
     </div>
   </div>
-  <form class="hidden">
+  <form class="hidden" name="Add Contact">
     <fieldset>
       <dl>
         <dt>
           <label for="full_name">Full Name:</label>
         </dt>
         <dd>
-          <input type="text" name="full_name" id="full_name" required>
+          <input type="text" name="full_name" id="full_name" placeholder="test" required>
         </dd>
         <dt>
           <label for="email">Email Address:</label>
         </dt>
         <dd>
-          <input type="email" name="email" id="email" required>
+          <input type="email" name="email" id="email" placeholder="test@sdfs.net" required>
         </dd>
         <dt>
           <label for="phone_number">Phone Number:</label>
         </dt>
         <dd>
-          <input type="tel" name="phone_number" id="phone_number" pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" required oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Please enter a 10 digit number')">
+          <input type="tel" name="phone_number" id="phone_number" placeholder='1234567889' pattern="[0-9]{3}-?[0-9]{3}-?[0-9]{4}" required oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Please enter a 10 digit number')">
         </dd>
         <fieldset id="tags">
             <legend>Add one or more tag(s) to contact:</legend>
             <div>
-              <input type="checkbox" id="buisness" name="buisness">
+              <input type="checkbox" id="buisness" name="buisness" checked>
               <label for="buisness">buisness</label>
             </div>
         
