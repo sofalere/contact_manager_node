@@ -4,12 +4,12 @@ class View {
     this.registerHelpers();
     this.contactToEditID = null;
 
+    this.addButton = document.querySelector('.add_contact');
     this.formDiv = document.querySelector('.form_div');
     this.mainDiv = document.querySelector('.main_div');
     this.form = document.querySelector('form');
     this.list = document.querySelector('.list');
     this.search = document.querySelector('#search');
-    this.backButton = document.querySelector('#back_button');
     
     this.bindEvents();
   }
@@ -21,8 +21,9 @@ class View {
   }
 
   resetList() {
-    this.list.querySelector("#contact_header").innerText = "Contact List";
     this.getContactElements().forEach(contact => contact.classList.remove('hidden'));
+    this.updateHeader();
+    this.showMain();
   }
 
   showForm() {
@@ -42,7 +43,7 @@ class View {
     this.formDiv.classList.remove('active')
     this.mainDiv.classList.add('active');
     this.mainDiv.style.height = "auto";
-    let height = this.mainDiv.clientHeight + "px"
+    let height = this.mainDiv.clientHeight + 100 + "px"
     this.mainDiv.style.height = "0px"
     setTimeout(() => {
       this.mainDiv.style.height = height
@@ -62,9 +63,7 @@ class View {
   }
 
   bindEvents() {
-    document.querySelectorAll('.addContact').forEach(addButton => {
-      addButton.addEventListener('click', this.showForm.bind(this));
-    });
+    this.addButton.addEventListener('click', this.showForm.bind(this));
     this.form.addEventListener('submit', this.addContactHandler.bind(this));
     this.list.addEventListener('click', this.deleteContactHandler.bind(this));
     this.list.addEventListener('click', this.openEditFormHandler.bind(this));
@@ -87,6 +86,7 @@ class View {
 
   cancelFormHandler() {
     this.form.reset();
+    this.contactToEditID = null;
     this.showMain();
   }
 
@@ -104,16 +104,32 @@ class View {
     this.form.reset();
   }
 
-  displayContacts(contacts) {
-    const html = this.generateHTML(contacts);
-    document.querySelector('.list').innerHTML += html;
 
+  updateHeader(custom) {
+    const header = this.list.querySelector("#contact_header");
+    if (custom) {
+      header.innerText = custom;
+    } else {
+      header.innerText = "Contact List";
+    }
+    if (this.getContactElements().length < 1) {
+      header.innerText = "Sorry no contacts to display";
+    }
+  }
+
+  displayContacts(contacts) {
+    if (Object.keys(contacts).length > 0) {
+      const html = this.generateHTML(contacts);
+      document.querySelector('.list').innerHTML += html;
+    }
+
+    this.updateHeader();
     this.showMain();
   }
 
   displayOneLessContact(id) {
     this.findElementByID(id).remove();
-    this.resetList();
+    // this.resetList();
   }
 
   deleteContactHandler(e) {
@@ -166,14 +182,16 @@ class View {
   displayContactsWithTags(ids, tag) {
     let contactHeader = document.querySelector("#contact_header");
     let backButton = document.querySelector('#back_button');
-    contactHeader.innerText = `Contacts with tag "${tag}":`
+
+    this.updateHeader(`Contacts with tag "${tag}":`);
     this.hideContactsByID(ids);
     backButton.classList.remove('hidden');
+    this.showMain();
   }
 
   backButtonHandler(e) { 
     if (e.target.id === 'back_button') {
-      this.backButton.classList.add('hidden');
+      document.querySelector('#back_button').classList.add('hidden');
       this.resetList();
     };
   }
@@ -181,10 +199,10 @@ class View {
   searchHandler(e) {
     let value = this.search.value;
     if (value.length > 0) {
+      this.updateHeader(`Searching for contacts including "${value}"`)
       this.contactManager.retrieveContactsByChars(value);
     } else {
       this.resetList();
-      this.showMain();
     }
   }
 
@@ -285,6 +303,10 @@ class ContactManager {
     this.view = new View(self);
     this.tagsAndIDs = {};
     this.retrieveAllContacts();
+  }
+
+  reject(error) {
+    this.view.alertError();
   }
 
   retrieveAllContacts() {
