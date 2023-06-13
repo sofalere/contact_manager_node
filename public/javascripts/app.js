@@ -1,30 +1,56 @@
 class View {
   constructor(contactManager) {
     this.contactManager = contactManager;
-
-    Handlebars.registerHelper('separateTagButtons', (tags) => {
-      return tags.split(',').map(tag => `<button type="button" value="${tag}"class="tag" name="${tag}">${tag}</button>`).join(', ');
-    });
-
-    this.form = document.querySelector('form');
-    this.main = document.querySelector('.main');
-    this.list = document.querySelector('.list');
+    this.registerHelpers();
     this.contactToEditID = null;
+
+    this.formDiv = document.querySelector('.form_div');
+    this.mainDiv = document.querySelector('.main_div');
+    this.form = document.querySelector('form');
+    this.list = document.querySelector('.list');
     this.search = document.querySelector('#search');
+    this.backButton = document.querySelector('#back_button');
     
     this.bindEvents();
   }
 
+  registerHelpers() {
+    Handlebars.registerHelper('separateTagButtons', (tags) => {
+      return tags.split(',').map(tag => `<button type="button" value="${tag}"class="tag" name="${tag}">${tag}</button>`).join(', ');
+    });
+  }
+
+  resetList() {
+    this.list.querySelector("#contact_header").innerText = "Contact List";
+    this.getContactElements().forEach(contact => contact.classList.remove('hidden'));
+  }
+
   showForm() {
-    this.main.classList.add('hidden');
-    this.form.classList.remove('hidden');
+    this.mainDiv.classList.remove('active')
+    if (!this.formDiv.classList.contains('active')) {
+      this.formDiv.classList.add('active');
+      this.formDiv.style.height = "auto";
+      let height = this.formDiv.clientHeight + "px"
+      this.formDiv.style.height = "0px"
+      setTimeout(() => {
+        this.formDiv.style.height = height
+      }, 0) 
+    }
   }
 
   showMain() {
-    this.form.reset();
-    this.contactToEditID = null;
-    this.main.classList.remove('hidden');
-    this.form.classList.add('hidden');
+    this.formDiv.classList.remove('active')
+    this.mainDiv.classList.add('active');
+    this.mainDiv.style.height = "auto";
+    let height = this.mainDiv.clientHeight + "px"
+    this.mainDiv.style.height = "0px"
+    setTimeout(() => {
+      this.mainDiv.style.height = height
+    }, 0) 
+  }
+
+  getContactElements() {
+    return document.querySelectorAll('article');
   }
 
   getIDByEvent(e) {
@@ -42,9 +68,10 @@ class View {
     this.form.addEventListener('submit', this.addContactHandler.bind(this));
     this.list.addEventListener('click', this.deleteContactHandler.bind(this));
     this.list.addEventListener('click', this.openEditFormHandler.bind(this));
-    document.querySelector('#cancelAdd').addEventListener('click', this.showMain.bind(this));
+    document.querySelector('#cancelAdd').addEventListener('click', this.cancelFormHandler.bind(this));
     this.list.addEventListener('click', this.findTagsHanlder.bind(this));
-    this.search.addEventListener(this.searchHandler.bind(this));
+    this.search.addEventListener('keyup', this.searchHandler.bind(this));
+    this.list.addEventListener('click', this.backButtonHandler.bind(this));
   }
 
   generateHTML(contacts) {
@@ -56,6 +83,11 @@ class View {
     let contactTemplate = document.querySelector('#contactList').innerHTML;
     let templateScript = Handlebars.compile(contactTemplate);
     return templateScript(context);
+  }
+
+  cancelFormHandler() {
+    this.form.reset();
+    this.showMain();
   }
 
   addContactHandler(e) {
@@ -81,6 +113,7 @@ class View {
 
   displayOneLessContact(id) {
     this.findElementByID(id).remove();
+    this.resetList();
   }
 
   deleteContactHandler(e) {
@@ -111,6 +144,8 @@ class View {
         tags.forEach(tag => this.form[tag].checked = true);
       }
     }
+
+    this.contactToEditID = null;
   }
 
   displayContactAfterEdit(contact) {
@@ -129,33 +164,38 @@ class View {
   }
 
   displayContactsWithTags(ids, tag) {
-    const contactHeader = document.querySelector("#contact_header");
-    contactHeader.innerText = `Contacts with tag ${tag}:`
-    
-    const button = document.createElement('button');
-    button.setAttribute("class", "back_button");
-    button.setAttribute("type", "button");
-    button.innerText = 'Back';
-    contactHeader.appendChild(button);
-    
-    const contactList = document.querySelectorAll('article');
-    contactList.forEach(contact => {
-      if (!ids.includes(Number.parseInt(contact.id, 10))) {
-        contact.classList.add('hidden');
-      }
-    });
+    let contactHeader = document.querySelector("#contact_header");
+    let backButton = document.querySelector('#back_button');
+    contactHeader.innerText = `Contacts with tag "${tag}":`
+    this.hideContactsByID(ids);
+    backButton.classList.remove('hidden');
+  }
 
-    button.addEventListener("click", e => {
-      e.preventDefault();
-      contactHeader.innerText = "Contact List";
-      button.remove();
-      contactList.forEach(contact => contact.classList.remove('hidden'));
-    })
+  backButtonHandler(e) { 
+    if (e.target.id === 'back_button') {
+      this.backButton.classList.add('hidden');
+      this.resetList();
+    };
   }
 
   searchHandler(e) {
-    const value = e.input.value;
+    let value = this.search.value;
+    if (value.length > 0) {
+      this.contactManager.retrieveContactsByChars(value);
+    } else {
+      this.resetList();
+      this.showMain();
+    }
+  }
 
+  hideContactsByID(ids) {
+    this.getContactElements().forEach(contact => {
+      if (!ids.includes(Number.parseInt(contact.id, 10))) {
+        contact.classList.add('hidden');
+      } else {
+        contact.classList.remove('hidden');
+      }
+    });
   }
 };
 
@@ -312,6 +352,15 @@ class ContactManager {
       self.view.displayContactAfterEdit.bind(self.view)(response);
     }
     self.contacts.editContact(resolve, data, id);
+  }
+
+  retrieveContactsByChars(chars) {
+    const self = this;
+    const resolve = function(contacts) {
+      const matchingIDs = contacts.filter(contact => contact.full_name.includes(chars)).map(contact => contact.id);
+      self.view.hideContactsByID.bind(self.view)(matchingIDs);
+    }
+    self.contacts.getAllContacts(resolve);
   }
 };
 

@@ -1,44 +1,23 @@
 [
   {
-    "full_name": "CCC",
-    "phone_number": "2342342342",
+    "full_name": "BBB",
+    "phone_number": "1231231234",
     "email": "asdasd@wr.net",
-    "tags": "buisness,engineering,sales",
-    "id": 3
+    "tags": "buisness,marketing",
+    "id": 4
   },
   {
-    "full_name": "asda",
+    "full_name": "CCCA",
     "phone_number": "1231231234",
     "email": "asdasd@wr.net",
     "tags": "buisness,sales",
     "id": 5
   },
   {
-    "full_name": "AAAA",
+    "full_name": "DDD",
     "phone_number": "1231231234",
     "email": "asdasd@wr.net",
-    "tags": "buisness,sales",
+    "tags": "buisness,marketing",
     "id": 6
-  },
-  {
-    "full_name": "AAA",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 8
-  },
-  {
-    "full_name": "asda",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness,engineering,marketing",
-    "id": 9
-  },
-  {
-    "full_name": "AAA",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "engineering,marketing",
-    "id": 10
   }
 ]

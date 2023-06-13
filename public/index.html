@@ -26,18 +26,16 @@
 </head>
 <body>
   <h1>Contact Manager</h1>
-  <div class="main">
+  <div class="main_div active sliding_div">
     <button class="addContact">Add Contact</button>
     <input id="search" type="text" placeholder="Search">
     <div class="list">
       <h3 id="contact_header">Contact List</h3>
-      <div id="noContacts" class="hidden">
-        <p>There are no contacts</p>
-        <button class="addContact">Add Contact</button>
-      </div>
+       <button class="hidden" type="button" id="back_button" value="Back">Back</button>
     </div>
   </div>
-  <form class="hidden" name="Add Contact">
+  <div class="form_div sliding_div">
+  <form name="Add Contact">
     <fieldset>
       <dl>
         <dt>
@@ -85,5 +83,6 @@
       </dl>
     </fieldset>
   </form>
+  </div>
 </body>
 </html>

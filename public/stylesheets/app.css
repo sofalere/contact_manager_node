@@ -5,3 +5,12 @@
 button.tag {
 /*   border: none; */
 }
+
+.sliding_div {
+  transition: height .5s ease;
+  overflow  : hidden;
+}
+
+.sliding_div:not(.active) {
+  display: none;
+}
