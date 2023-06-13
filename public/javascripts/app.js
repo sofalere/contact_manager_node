@@ -1,22 +1,18 @@
 class View {
   constructor(contactManager) {
     this.contactManager = contactManager;
-  
-    Handlebars.registerHelper('separateTags', (tags) => {
-      return tags.split(',').join(', ');
+
+    Handlebars.registerHelper('separateTagButtons', (tags) => {
+      return tags.split(',').map(tag => `<button type="button" value="${tag}"class="tag" name="${tag}">${tag}</button>`).join(', ');
     });
-    
-    this.renderAll();
 
     this.form = document.querySelector('form');
     this.main = document.querySelector('.main');
+    this.list = document.querySelector('.list');
     this.contactToEditID = null;
+    this.search = document.querySelector('#search');
     
     this.bindEvents();
-  }
-
-  alertError(error) {
-    alert(error);
   }
 
   showForm() {
@@ -44,13 +40,11 @@ class View {
       addButton.addEventListener('click', this.showForm.bind(this));
     });
     this.form.addEventListener('submit', this.addContactHandler.bind(this));
-    document.querySelector('.list').addEventListener('click', this.deleteContactHandler.bind(this));
-    document.querySelector('.list').addEventListener('click', this.openEditFormHandler.bind(this));
+    this.list.addEventListener('click', this.deleteContactHandler.bind(this));
+    this.list.addEventListener('click', this.openEditFormHandler.bind(this));
     document.querySelector('#cancelAdd').addEventListener('click', this.showMain.bind(this));
-  }
-
-  renderAll() {
-    this.contactManager.retrieveAll(this.displayContacts.bind(this));
+    this.list.addEventListener('click', this.findTagsHanlder.bind(this));
+    this.search.addEventListener(this.searchHandler.bind(this));
   }
 
   generateHTML(contacts) {
@@ -69,9 +63,9 @@ class View {
     const data = new FormData(e.target);
 
     if (!!this.contactToEditID) {
-      this.contactManager.sendContactToEdit(this.displayContactAfterEdit.bind(this), data, this.contactToEditID);
+      this.contactManager.sendContactToEdit(data, this.contactToEditID);
     } else {
-      this.contactManager.sendContactToAdd(this.displayContacts.bind(this), data);
+      this.contactManager.sendContactToAdd(data);
     }
 
     this.contactToEditID = null;
@@ -92,7 +86,7 @@ class View {
   deleteContactHandler(e) {
     if (e.target.id === 'deleteContact') {
       const id = this.getIDByEvent(e);
-      this.contactManager.sendContactToDelete(this.displayOneLessContact.bind(this), id);
+      this.contactManager.sendContactToDelete(id);
     }
   }
 
@@ -120,11 +114,48 @@ class View {
   }
 
   displayContactAfterEdit(contact) {
-    const element = this.findElementByID(contact[0].id);
+    const element = this.findElementByID(contact.id);
     const html = this.generateHTML(contact);
 
     element.innerHTML = html;
     this.showMain();
+  }
+
+  findTagsHanlder(e) {
+    if (e.target.className === 'tag') {
+      const tag = e.target.value;
+      this.contactManager.retrieveContactsByTag(tag);
+    }
+  }
+
+  displayContactsWithTags(ids, tag) {
+    const contactHeader = document.querySelector("#contact_header");
+    contactHeader.innerText = `Contacts with tag ${tag}:`
+    
+    const button = document.createElement('button');
+    button.setAttribute("class", "back_button");
+    button.setAttribute("type", "button");
+    button.innerText = 'Back';
+    contactHeader.appendChild(button);
+    
+    const contactList = document.querySelectorAll('article');
+    contactList.forEach(contact => {
+      if (!ids.includes(Number.parseInt(contact.id, 10))) {
+        contact.classList.add('hidden');
+      }
+    });
+
+    button.addEventListener("click", e => {
+      e.preventDefault();
+      contactHeader.innerText = "Contact List";
+      button.remove();
+      contactList.forEach(contact => contact.classList.remove('hidden'));
+    })
+  }
+
+  searchHandler(e) {
+    const value = e.input.value;
+
   }
 };
 
@@ -213,9 +244,15 @@ class ContactManager {
     this.contacts = new Contacts(self);
     this.view = new View(self);
     this.tagsAndIDs = {};
+    this.retrieveAllContacts();
   }
 
-  retrieveAll(resolve) {
+  retrieveAllContacts() {
+    const self = this;
+    const resolve = function(response) {
+      response.forEach(contact => self.storeTagPair(contact));
+      self.view.displayContacts.bind(self.view)(response);
+    }
     this.contacts.getAllContacts(resolve);
   }
 
@@ -223,30 +260,58 @@ class ContactManager {
     this.contacts.getContactByID(resolve, id);
   }
 
-  storeTags(response) {
-    const id = response.id;
-    const tags = response.tags.split(',');
-    tags.forEach(function(tag) {
-        (this.tagsAndIDs[tag]) ? this.tagsAndIDs[tag].push(id) : this.tagsAndIDs[tag] = [id];
-    })
-  }
-
-  sendContactToAdd(resolve, data) {
-    const real = function(response) {
-      this.storeTags.call(this);
-      resolve(response);
+  retrieveContactsByTag(tag) {
+    const tagIDs = this.tagsAndIDs[tag];
+    if (tagIDs) {
+      this.view.displayContactsWithTags.call(this.view, tagIDs, tag);
     }
-    this.contacts.addContact(real.bind(this), data);
   }
 
-  sendContactToDelete(resolve, id) {
-    this.contacts.deleteContact(resolve, id);
-    return id;
+  storeTagPair(contact) {
+    const id = contact.id;
+    const tags = contact.tags.split(',');
+    for(const tag of tags) {
+      if (!this.tagsAndIDs[tag]) {
+        this.tagsAndIDs[tag] = [id];
+      } else if (!this.tagsAndIDs[tag].includes(id)) {
+        this.tagsAndIDs[tag].push(id);
+      }
+    };
   }
 
-  sendContactToEdit(resolve, data, id) {
-    this.contacts.editContact(resolve, data, id);
-    return id;
+  deleteTagPair(id) {
+    for(const [tag, IDs] of Object.entries(this.tagsAndIDs)) {
+      this.tagsAndIDs[tag] = IDs.filter(_id => _id !== id);
+
+    }
+  }
+
+  sendContactToAdd(data) {
+    const self = this;
+    const resolve = function(response) {
+      self.storeTagPair.bind(self)(response);
+      self.view.displayContacts.bind(self.view)(response);
+    }
+
+    self.contacts.addContact(resolve.bind(self), data);
+  }
+
+  sendContactToDelete(id) {
+    const self = this;
+    const resolve = function(id) {
+      self.deleteTagPair.bind(self)(id);
+      self.view.displayOneLessContact.bind(self.view)(id);
+    }
+    self.contacts.deleteContact(resolve, id);
+  }
+
+  sendContactToEdit(data, id) {
+    const self = this;
+    const resolve = function(response) {
+      self.storeTagPair.bind(self)(response);
+      self.view.displayContactAfterEdit.bind(self.view)(response);
+    }
+    self.contacts.editContact(resolve, data, id);
   }
 };
 

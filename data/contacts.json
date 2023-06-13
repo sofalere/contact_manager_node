@@ -1,107 +1,44 @@
 [
   {
-    "full_name": "tttt",
-    "phone_number": "1231231234",
+    "full_name": "CCC",
+    "phone_number": "2342342342",
     "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 39
-  },
-  {
-    "full_name": "BBB",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 40
-  },
-  {
-    "full_name": "NNN",
-    "phone_number": "1231231212",
-    "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 41
-  },
-  {
-    "full_name": "AAA",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness,marketing",
-    "id": 42
-  },
-  {
-    "full_name": "AAA",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 43
-  },
-  {
-    "full_name": "asdaasd",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 44
-  },
-  {
-    "full_name": "aaaa",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness,marketing",
-    "id": 45
-  },
-  {
-    "full_name": "qweq",
-    "phone_number": "1231231234",
-    "email": "qwe@erwe.net",
-    "tags": "buisness",
-    "id": 46
-  },
-  {
-    "full_name": "bbb",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 47
+    "tags": "buisness,engineering,sales",
+    "id": 3
   },
   {
     "full_name": "asda",
     "phone_number": "1231231234",
     "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 48
+    "tags": "buisness,sales",
+    "id": 5
   },
   {
     "full_name": "AAAA",
     "phone_number": "1231231234",
     "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 49
+    "tags": "buisness,sales",
+    "id": 6
   },
   {
-    "full_name": "asfs",
+    "full_name": "AAA",
     "phone_number": "1231231234",
     "email": "asdasd@wr.net",
     "tags": "buisness",
-    "id": 50
+    "id": 8
   },
   {
     "full_name": "asda",
     "phone_number": "1231231234",
     "email": "asdasd@wr.net",
-    "tags": "buisness",
-    "id": 51
+    "tags": "buisness,engineering,marketing",
+    "id": 9
   },
   {
-    "full_name": "asfs",
+    "full_name": "AAA",
     "phone_number": "1231231234",
     "email": "asdasd@wr.net",
-    "tags": "buisness,sales",
-    "id": 52
-  },
-  {
-    "full_name": "ASAS",
-    "phone_number": "1231231234",
-    "email": "asdasd@wr.net",
-    "tags": "buisness,marketing",
-    "id": 57
+    "tags": "engineering,marketing",
+    "id": 10
   }
 ]

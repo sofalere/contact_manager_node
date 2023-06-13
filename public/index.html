@@ -8,14 +8,13 @@
   <script src="/javascripts/jquery.js"></script>
   <script src="/javascripts/handlebars.js"></script>
        <script id="contactList" type="text/x-handlebars">
-          
           {{#each contacts}}
             <article class="contact" id="{{id}}">
               <h2>{{full_name}}</h2>
               <p>Email Address: {{email}}</p>
               <p>Phone Number: {{phone_number}}</p>
               {{#if tags}}
-                <p>Tags: {{separateTags tags}}</p>
+                <p>Tags: {{{separateTagButtons tags}}}</p>
               {{/if}}
               <button type="button" id='editContact'>Edit</button>
               <button type="button" id='deleteContact'>Delete</button>
@@ -31,6 +30,7 @@
     <button class="addContact">Add Contact</button>
     <input id="search" type="text" placeholder="Search">
     <div class="list">
+      <h3 id="contact_header">Contact List</h3>
       <div id="noContacts" class="hidden">
         <p>There are no contacts</p>
         <button class="addContact">Add Contact</button>
