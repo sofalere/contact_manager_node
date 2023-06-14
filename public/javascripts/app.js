@@ -22,6 +22,8 @@ class View {
 
   resetList() {
     this.getContactElements().forEach(contact => contact.classList.remove('hidden'));
+    document.querySelector('#back_button').classList.add('hidden');
+    this.search.value = '';
     this.updateHeader();
     this.showMain();
   }
@@ -40,13 +42,14 @@ class View {
   }
 
   showMain() {
+    const self = this;
     this.formDiv.classList.remove('active')
     this.mainDiv.classList.add('active');
     this.mainDiv.style.height = "auto";
     let height = this.mainDiv.clientHeight + 100 + "px"
     this.mainDiv.style.height = "0px"
     setTimeout(() => {
-      this.mainDiv.style.height = height
+      self.mainDiv.style.height = height
     }, 0) 
   }
 
@@ -60,6 +63,15 @@ class View {
 
   findElementByID(id) {
     return document.querySelector(`[id='${id}']`);
+  }
+
+  alertError(error) {
+    alert(error);
+    this.resetList();
+  }
+
+  listEmpty() {
+    return this.getContactElements().length < 1;
   }
 
   bindEvents() {
@@ -112,8 +124,11 @@ class View {
     } else {
       header.innerText = "Contact List";
     }
-    if (this.getContactElements().length < 1) {
+    if (this.listEmpty()) {
       header.innerText = "Sorry no contacts to display";
+      let newAddButton = this.addButton.cloneNode(true);
+      header.appendChild(newAddButton);
+      newAddButton.addEventListener('click', this.showForm.bind(this));
     }
   }
 
@@ -129,7 +144,9 @@ class View {
 
   displayOneLessContact(id) {
     this.findElementByID(id).remove();
-    // this.resetList();
+    if (this.listEmpty()) {
+      this.resetList();
+    }
   }
 
   deleteContactHandler(e) {
@@ -152,6 +169,9 @@ class View {
     this.form.name = 'Edit Contact';
     
     for (const [key, val] of Object.entries(response)) {
+      if (key === 'id') {
+        continue;
+      }
       const input = this.form.elements[key];
       input.value = val;
 
@@ -160,8 +180,6 @@ class View {
         tags.forEach(tag => this.form[tag].checked = true);
       }
     }
-
-    this.contactToEditID = null;
   }
 
   displayContactAfterEdit(contact) {
@@ -170,6 +188,7 @@ class View {
 
     element.innerHTML = html;
     this.showMain();
+    // this.contactToE
   }
 
   findTagsHanlder(e) {
@@ -180,12 +199,12 @@ class View {
   }
 
   displayContactsWithTags(ids, tag) {
-    let contactHeader = document.querySelector("#contact_header");
     let backButton = document.querySelector('#back_button');
+    backButton.classList.remove('hidden');
 
     this.updateHeader(`Contacts with tag "${tag}":`);
     this.hideContactsByID(ids);
-    backButton.classList.remove('hidden');
+    this.search.value = '';
     this.showMain();
   }
 
@@ -234,13 +253,18 @@ class Contacts {
     return json;
   }
 
+  reject(error) {
+    this.contactManager.databaseError.bind(this.contactManager)(error);
+  }
+
   fromDatabase = async function(url, options, resolve) {
     try {
       const response = await fetch(url, options);
       const contacts = await response.json();
       resolve(contacts);
     } catch (error) {
-      return error;
+      console.log(error);
+      this.reject(error);
     }
   }
 
@@ -305,8 +329,8 @@ class ContactManager {
     this.retrieveAllContacts();
   }
 
-  reject(error) {
-    this.view.alertError();
+  databaseError(error) {
+    this.view.alertError(error);
   }
 
   retrieveAllContacts() {
